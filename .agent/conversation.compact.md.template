@@ -1,0 +1,55 @@
+# Conversation Compact Log (Template)
+
+This file is a **local-only** condensed change log for the current session.
+It should be listed in `.gitignore` and never committed.
+
+---
+
+## Current Session
+
+**Started**: [TIMESTAMP]  
+**Objective**: [DESCRIBE OBJECTIVE]
+
+---
+
+## Changes Made
+
+> Use this section to track changes during the session.
+
+### [TIMESTAMP] - [Agent Name]
+
+**Summary**: [One-line summary]
+
+**Files**:
+- [path/to/file1]
+- [path/to/file2]
+
+**Decisions**:
+- Decision: [What was decided]
+
+**Actions**:
+- Action: [Next step]
+
+**Questions**:
+- Question: [Open question for Human Director]
+
+---
+
+## Session Notes
+
+> Free-form notes, debugging observations, context for next session.
+
+---
+
+## Handoff
+
+**To**: [Next agent or Human Director]  
+**Status**: [ready | blocked | wip]  
+**Priority Items**:
+1. [Most important next step]
+2. [Second priority]
+3. [Third priority]
+
+---
+
+*This file is gitignored. Copy to `conversation.compact.md` when starting a session.*
