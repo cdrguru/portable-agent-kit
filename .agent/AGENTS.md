@@ -56,6 +56,32 @@ Keep handoffs **short and actionable**:
 
 > **Customize these for your project.** The roles below are templates.
 
+### Agent: codex (Planner / Orchestrator)
+
+- **Purpose**: Maintain the plan and coordinate work across agents
+- **Owns**: Task breakdowns, acceptance criteria, sequencing, handoffs
+- **Rules**:
+  - Delegate execution to ag
+  - Route detailed clarifications/writing to hp
+  - Minimize Human Director typing; prefer y/no questions
+
+### Agent: ag (Builder / Executor)
+
+- **Purpose**: Implement code changes with minimal diffs; run verification
+- **Note**: ag can be "Antigravity or Copilot Agent" (same role)
+- **Rules**:
+  - Default to safe execution without waiting
+  - If a decision is required, ask a single y/no question
+  - If requirements are missing, request hp to gather them
+
+### Agent: hp (Human Proxy / Clarifier)
+
+- **Purpose**: Gather detailed requirements and produce a short paste-back
+- **Rules**:
+  - Ask only what is needed to unblock
+  - Prefer y/no questions
+  - Provide: Decision, Assumptions, Requirements, Acceptance criteria, paste-back
+
 ### Agent: Planner
 
 - **Purpose**: Break objectives into checkable tasks and acceptance criteria

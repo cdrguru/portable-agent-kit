@@ -10,10 +10,15 @@ A **zero-dependency, model-agnostic** kit for enabling consistent multi-agent co
 |-----------|---------|
 | `AGENTS.md` | Agent roster, roles, and coordination rules |
 | `ai/prompts/multi_agent_orchestration_system.md` | Shared orchestration protocol |
+| `ai/prompts/agent_profiles/` | Role profiles for codex/ag/hp |
 | `ai/rules/agent_handshake.md` | Task locking and handoff mechanics |
+| `context/agent_environment.md` | Shared roles + interaction policy |
 | `.agent/docs/agent_handoffs/` | Append-only handoff log |
 | `conversation.compact.md.template` | Template for local session logs |
+| `skills/` | Optional skills (repeatable workflows) |
 | `tools/utilities/update_agent_conversation_log.py` | CLI helper for logging handoffs |
+| `tools/utilities/print_agent_init.py` | Print a combined session-init prompt |
+| `tools/utilities/skills.py` | List/show/search skills |
 
 ---
 
@@ -97,6 +102,17 @@ python3 .agent/tools/utilities/update_agent_conversation_log.py \
 
 ---
 
+## Using Skills (Optional)
+
+List available skills and show a skill procedure (print for copy/paste):
+
+```bash
+python3 .agent/tools/utilities/skills.py list
+python3 .agent/tools/utilities/skills.py show handoff-log-update
+```
+
+---
+
 ## Key Principles
 
 1. **Append-only logs**: Never edit or delete handoff entries
@@ -126,9 +142,21 @@ your-repo/
 |   +-- AGENTS.md
 |   +-- README.md (this file)
 |   +-- conversation.compact.md.template
+|   +-- skills/
+|   |   +-- README.md
+|   |   +-- SKILL.md.template
+|   |   +-- handoff-log-update/
+|   |   |   +-- SKILL.md
+|   |   +-- handoff-log-condense/
+|   |   |   +-- SKILL.md
+|   |   +-- session-bootstrap/
+|   |       +-- SKILL.md
+|   +-- context/
+|   |   +-- agent_environment.md
 |   +-- ai/
 |   |   +-- prompts/
 |   |   |   +-- multi_agent_orchestration_system.md
+|   |   |   +-- agent_profiles/
 |   |   +-- rules/
 |   |       +-- agent_handshake.md
 |   +-- docs/
@@ -138,6 +166,8 @@ your-repo/
 |   +-- tools/
 |       +-- utilities/
 |           +-- update_agent_conversation_log.py
+|           +-- print_agent_init.py
+|           +-- skills.py
 +-- conversation.compact.md (gitignored, created per session)
 +-- .gitignore (updated to ignore local logs)
 ```

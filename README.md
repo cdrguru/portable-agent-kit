@@ -63,9 +63,21 @@ cp -r .agent /path/to/your/repo/
 +-- AGENTS.md                     # Agent roster and coordination rules
 +-- README.md                     # Installation guide
 +-- conversation.compact.md.template  # Local session log template
++-- skills/
+|   +-- README.md                 # Skills system overview
+|   +-- SKILL.md.template         # Template for new skills
+|   +-- handoff-log-update/
+|   |   +-- SKILL.md
+|   +-- handoff-log-condense/
+|   |   +-- SKILL.md
+|   +-- session-bootstrap/
+|       +-- SKILL.md
++-- context/
+|   +-- agent_environment.md      # Shared role + interaction policy
 +-- ai/
 |   +-- prompts/
 |   |   +-- multi_agent_orchestration_system.md  # Shared protocol
+|   |   +-- agent_profiles/       # Role profiles (ag/hp/codex)
 |   +-- rules/
 |       +-- agent_handshake.md    # Handoff mechanics
 +-- docs/
@@ -75,6 +87,8 @@ cp -r .agent /path/to/your/repo/
 +-- tools/
     +-- utilities/
         +-- update_agent_conversation_log.py  # CLI helper
+        +-- print_agent_init.py   # Print a combined session-init prompt
+        +-- skills.py             # List/show/search skills
 ```
 
 ---
@@ -152,6 +166,35 @@ python3 .agent/tools/utilities/update_agent_conversation_log.py \
 cp .agent/conversation.compact.md.template conversation.compact.md
 
 # Edit with your objective and start working
+```
+
+Generate a combined init prompt for a specific agent:
+
+```bash
+python3 .agent/tools/utilities/print_agent_init.py --agent ag
+python3 .agent/tools/utilities/print_agent_init.py --agent hp
+python3 .agent/tools/utilities/print_agent_init.py --agent codex
+```
+
+Optional: pipe to your clipboard (example for macOS):
+
+```bash
+python3 .agent/tools/utilities/print_agent_init.py --agent ag | pbcopy
+```
+
+---
+
+## Skills (optional)
+
+The kit includes optional skills under `.agent/skills/`. Each skill is a deterministic
+playbook with a `SKILL.md` and optional scripts or references. Use `show` to print a
+skill for easy copy/paste into an agent session.
+
+List and show skills:
+
+```bash
+python3 .agent/tools/utilities/skills.py list
+python3 .agent/tools/utilities/skills.py show handoff-log-update
 ```
 
 ---

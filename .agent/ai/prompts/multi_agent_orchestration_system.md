@@ -31,6 +31,8 @@ Define a simple, repeatable protocol for multiple AI agents to collaborate with 
 - Verify exit status after every command
 - On error, stop and report to Human Director
 
+If a task matches a skill, follow the relevant SKILL.md procedure under `.agent/skills/`.
+
 ## Exit Criteria
 
 - Objective met and verified (tests/lint/audit as applicable)
