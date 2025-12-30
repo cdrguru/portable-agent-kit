@@ -24,3 +24,8 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# Offline AI
+mcp-config.json
+lmstudio_mcp.py
+
