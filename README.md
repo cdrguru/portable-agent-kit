@@ -61,6 +61,7 @@ cp -r .agent /path/to/your/repo/
 ```text
 .agent/
 +-- AGENTS.md                     # Agent roster and coordination rules
++-- MANIFEST.md                   # North Star goals and constraints
 +-- README.md                     # Installation guide
 +-- conversation.compact.md.template  # Local session log template
 +-- context/
@@ -68,9 +69,14 @@ cp -r .agent /path/to/your/repo/
 +-- ai/
 |   +-- prompts/
 |   |   +-- multi_agent_orchestration_system.md  # Shared protocol
-|   |   +-- agent_profiles/       # Role profiles (ag/hp/codex)
+|   |   +-- agent_profiles/       # Role profiles (ag/hp/codex/librarian)
 |   +-- rules/
 |       +-- agent_handshake.md    # Handoff mechanics
++-- workflows/
+|   +-- daily_startup.md          # Routine workflows
+|   +-- brain_dump.md
++-- state/                        # Active state tracking
+|   +-- active_tasks.md
 +-- docs/
 |   +-- agent_handoffs/
 |       +-- README.md
@@ -80,6 +86,26 @@ cp -r .agent /path/to/your/repo/
         +-- update_agent_conversation_log.py  # CLI helper
         +-- print_agent_init.py   # Print a combined session-init prompt
 ```
+
+---
+
+## Strategic Layer (PDE)
+
+The kit includes a **Prompt Development Environment (PDE)** layer for higher-level strategic alignment:
+
+### Agents
+
+- **Ruthless Prioritizer**: Filters tasks against your `MANIFEST.md` goals.
+- **Librarian**: Extracts reusable knowledge from completed work.
+
+### Workflows
+
+- **Daily Startup**: Morning ritual to set intention.
+- **Brain Dump**: Process raw ideas into structured tasks.
+
+### Configuration
+
+Edit `.agent/MANIFEST.md` to define your **North Star Goals** and **Constraints**. This file serves as the "constitution" for the Ruthless Prioritizer agent.
 
 ---
 
