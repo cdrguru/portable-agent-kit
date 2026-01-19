@@ -176,4 +176,101 @@ Before marking any task `[x]`, ask:
 
 ---
 
+## PDE (Paul Davis Experience) Agents
+
+The following agents provide strategic focus and knowledge management capabilities.
+
+### Agent: ruthless-prioritizer
+
+```yaml
+id: ruthless-prioritizer
+label: Ruthless Prioritizer
+description: >
+  A focus protection agent that aggressively filters tasks against the MANIFEST.md North Star goals.
+  Uses a binary KEEP/KILL decision tree to eliminate distractions and "shiny objects."
+primary_user_role: owner
+
+entrypoint:
+  type: code
+  path: .agent/ai/prompts/agent_profiles/ruthless_prioritizer.md
+  notes: System 2 reasoning agent with explicit alignment checks.
+
+knowledge_sources:
+  - name: North Star Manifest
+    description: Obsessional goals, constraints, and tie-breaking heuristics.
+    location: .agent/MANIFEST.md
+
+tasks:
+  - id: filter-tasks
+    label: Filter Task List
+    description: >
+      Analyzes tasks against the North Star goals and returns a prioritized table
+      with KEEP/KILL status and P0/P1/P2 priority levels.
+    trigger_examples:
+      - "@ruthless_prioritizer 'Fix login bug vs research new framework'"
+      - "Prioritize my task list"
+    required_inputs:
+      - Task list or brain dump
+    output_format: markdown-table
+    related_knowledge:
+      - North Star Manifest
+```
+
+### Agent: librarian
+
+```yaml
+id: librarian
+label: The Librarian
+description: >
+  A knowledge compounding agent that extracts reusable assets from completed work
+  and links them to existing knowledge. Categorizes insights into Code Patterns,
+  Decision Frameworks, Prompts, Processes, and Failure Lessons.
+primary_user_role: owner
+
+entrypoint:
+  type: code
+  path: .agent/ai/prompts/agent_profiles/librarian.md
+  notes: Triggered when work is completed successfully.
+
+knowledge_sources:
+  - name: Knowledge Base
+    description: Atomic notes organized by category.
+    location: .agent/knowledge/
+
+tasks:
+  - id: extract-knowledge
+    label: Extract Knowledge Asset
+    description: >
+      Analyzes completed work, identifies the core "Unit of Knowledge,"
+      and creates an atomic note in the knowledge base.
+    trigger_examples:
+      - "@librarian 'We solved the auth issue with retry logic'"
+      - "That worked - save this pattern"
+    required_inputs:
+      - Description of what was learned/solved
+    output_format: markdown
+    related_knowledge:
+      - Knowledge Base
+```
+
+---
+
+## PDE Workflows
+
+| Workflow | Purpose | Location |
+|----------|---------|----------|
+| **Daily Startup** | Morning ritual to set the "One Thing" and flight plan | `.agent/workflows/daily_startup.md` |
+| **Brain Dump** | Intake raw ideas, validate against North Star, structure into tasks | `.agent/workflows/brain_dump.md` |
+
+## PDE State Files
+
+| File | Purpose |
+|------|---------|
+| `.agent/state/active_tasks.md` | Single source of truth for todos |
+| `.agent/state/inbox.md` | Brain dump inbox for raw ideas |
+| `.agent/state/metrics.md` | PDE metrics dashboard |
+| `.agent/MANIFEST.md` | North Star goals and constraints |
+
+---
+
 *Template Version: 1.0.0 | Portable Agent Collaboration Kit*
