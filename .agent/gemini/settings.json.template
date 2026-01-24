@@ -1,0 +1,20 @@
+{
+  "general": {
+    "previewFeatures": true
+  },
+  "context": {
+    "fileName": [
+      ".agent/ai/prompts/multi_agent_orchestration_system.md",
+      ".agent/AGENTS.md",
+      ".agent/task.md",
+      ".agent/implementation_plan.md"
+    ],
+    "discoveryMaxDirs": 200
+  },
+  "experimental": {
+    "stepLimit": 30
+  },
+  "tools": {
+    "sandbox": false
+  }
+}

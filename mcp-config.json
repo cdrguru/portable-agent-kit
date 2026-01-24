@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "secure-filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "<YOUR_WORKSPACE_PATH>"
+      ],
+      "env": {}
+    }
+  }
+}

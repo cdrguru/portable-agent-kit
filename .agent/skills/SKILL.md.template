@@ -1,0 +1,27 @@
+---
+name: <skill-name>
+description: <when the skill applies, in one sentence>
+metadata:
+  short-description: <user-facing short summary>
+---
+
+# <Skill Title>
+
+## When to use
+<Describe the triggering conditions.>
+
+## Procedure
+1. <Step one>
+2. <Step two>
+3. <Step three>
+
+## Inputs and outputs
+- Inputs: <what the skill needs>
+- Outputs: <what the skill produces>
+
+## Constraints
+- <Key constraint 1>
+- <Key constraint 2>
+
+## Examples
+- $<skill-name>
