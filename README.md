@@ -96,7 +96,37 @@ The **PACK Development Engine (PDE)** provides structural maintenance for the ki
 |   +-- state/                    # friction_log, roadmap
 +-- deploy_agent_kit.py           # Installer script
 +-- lmstudio_mcp.py               # Context-aware offline model bridge
++-- templates/
+|   +-- parallel-cloud-tasks-kit/ # Portable cloud task batch workflow
 ```
+
+---
+
+## Templates
+
+Reusable add-ons you can copy into any repo:
+
+- `templates/parallel-cloud-tasks-kit/` — generate 5 disjoint cloud tasks, review, and merge them safely.
+  - See `templates/parallel-cloud-tasks-kit/README.md` for full instructions.
+
+### Parallel Cloud Tasks — Quick Use
+
+```bash
+# From this repo, copy the kit into your target repo
+cp -R templates/parallel-cloud-tasks-kit /path/to/your/repo/
+
+# In the target repo, open SCANNER_PROMPT.md and edit the CONFIG block:
+# - PROJECT_NAME, SOURCE_DIRS, TEST_COMMAND, BASE_BRANCH, etc.
+```
+
+Run the workflow (in the target repo):
+1. Paste `SCANNER_PROMPT.md` into Local Claude Code to generate `cloud_tasks/`
+2. Open 5 Cloud sessions and paste `cloud_tasks/task_N.md` into each
+3. Paste `MERGE_PROTOCOL.md` into Local Claude Code to review/merge
+
+Compatibility:
+- Requires a git repo
+- Merge protocol assumes GitHub + `gh` CLI (adjust if using another host)
 
 ---
 

@@ -1,6 +1,9 @@
 # Local session logs
 conversation.compact.md
 
+# Generated cloud task files
+cloud_tasks/
+
 # Reports directory
 .reports/
 
@@ -28,4 +31,3 @@ Thumbs.db
 # Offline AI
 mcp-config.json
 lmstudio_mcp.py
-

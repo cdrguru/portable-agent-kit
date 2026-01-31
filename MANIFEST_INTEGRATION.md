@@ -65,7 +65,7 @@ All internal references updated from `.pde/` to `.agent/`:
 | Check | Result |
 | ----- | ------ |
 | All target files exist | ✅ Pass |
-| No absolute paths (`/Users/`) | ✅ Pass |
+| No absolute user paths (e.g., `$HOME`) | ✅ Pass |
 | AGENTS.md updated (append only) | ✅ Pass |
 | No file collisions | ✅ Pass |
 
@@ -88,3 +88,9 @@ The original `.pde/` directory remains intact. It can be safely removed after co
 # After verification, optionally remove:
 # rm -rf .pde/
 ```
+
+## Add-on Templates
+
+| Template | Path | Status |
+| --- | --- | --- |
+| Parallel Cloud Tasks Kit | `templates/parallel-cloud-tasks-kit/` | ✅ Added |
