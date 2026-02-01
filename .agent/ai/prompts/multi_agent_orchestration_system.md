@@ -121,4 +121,56 @@ Question: Should we support edge case W?
 
 ---
 
-*Protocol Version: 1.0.0 | Portable Agent Collaboration Kit*
+## Prompt Attribution & Clarification Protocol
+
+When a prompt passes through interpretation layers (speech → transcription → AI rewrite → executing agent), each layer can introduce errors. This protocol prevents agents from executing confidently on compounded misinterpretations.
+
+### Prompt Origin Block
+
+When an AI agent rewrites or interprets a human prompt, include this block immediately after the Goal heading:
+
+> **Prompt Origin:** [Source description]
+> **Interpretation Confidence:** [High | Medium | Low]
+> **Clarification Recommended:** [Yes/No — if Yes, list specific unclear points]
+
+**Source descriptions** (use the most specific that applies):
+
+| Tag | Meaning |
+| --- | ------- |
+| `Human-authored (direct text)` | Typed by human, no interpretation layer |
+| `Interpreted from human speech-to-text` | Transcribed speech, may contain errors |
+| `AI-generated (model: X)` | Written entirely by an AI agent |
+| `AI-rewritten from human speech-to-text (model: X)` | AI interpreted transcribed speech |
+
+### Clarification Triggers
+
+**MUST ask before executing if:**
+
+- Prompt Origin indicates speech-to-text AND Interpretation Confidence is Medium or Low
+- Instructions contain logical contradictions
+- Key terms are ambiguous (e.g., "run them again" without a clear antecedent)
+- Scope is unclear (affects 1 file vs many files)
+
+**SHOULD ask before executing if:**
+
+- Prompt was AI-rewritten and you disagree with the interpretation
+- You're about to make destructive changes (delete, overwrite, force-push)
+- Direction seems uncertain and the task has broad scope
+
+### Example: AI-Rewritten Prompt
+
+> **Prompt Origin:** AI-rewritten from human speech-to-text (GitHub Copilot, Claude Opus 4.5)
+> **Interpretation Confidence:** Medium
+> **Clarification Recommended:** Yes — "run them again" is ambiguous. Does "them" refer to the tests or the scripts?
+
+### Example: Direct Human Prompt
+
+Direct human-typed prompts with clear instructions do not require a Prompt Origin block. If you add one:
+
+> **Prompt Origin:** Human-authored (direct text)
+> **Interpretation Confidence:** High
+> **Clarification Recommended:** No
+
+---
+
+*Protocol Version: 1.1.0 | Portable Agent Collaboration Kit*

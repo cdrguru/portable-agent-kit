@@ -45,3 +45,7 @@ Works with any language. Edit the CONFIG block to set your test command:
 ## Adapting for Fewer Sessions
 
 If you don't need 5 parallel sessions, the scanner will generate fewer tasks when fewer disjoint opportunities exist. You can also edit the scanner prompt to change `>= 5` to any number.
+
+## Related
+
+- **`templates/iterative-dev-protocol.md`** — wraps this kit into a repeatable Generate/Execute/Merge/Archive cycle with state-machine resumption and batch archiving. Use it when you want to run multiple rounds of parallel tasks back-to-back.

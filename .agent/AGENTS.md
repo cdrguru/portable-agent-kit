@@ -31,6 +31,7 @@ ai/prompts/multi_agent_orchestration_system.md
 |------|---------|
 | `AGENTS.md` | This file; who does what, how to hand off |
 | `ai/prompts/multi_agent_orchestration_system.md` | Shared orchestration protocol |
+| `ai/prompts/multi_agent_orchestration_system.md#prompt-attribution` | Prompt origin tracking & clarification triggers |
 | `ai/rules/agent_handshake.md` | Lock/handoff mechanics |
 | `.agent/docs/agent_handoffs/agent_conversation_log.md` | Shared append-only handoff log |
 | `conversation.compact.md` | Local session log (gitignored) |
@@ -51,6 +52,10 @@ Keep handoffs **short and actionable**:
 - 3 bullets for what's next
 - Always include file paths
 
+### Prompt Attribution
+
+When relaying or rewriting a human prompt (especially from speech-to-text), include the **Prompt Origin block** defined in `ai/prompts/multi_agent_orchestration_system.md`. This prevents executing on compounded misinterpretations. See that file's "Clarification Triggers" section for when agents MUST or SHOULD pause to ask.
+
 ---
 
 ## Registered Agents
@@ -65,6 +70,7 @@ Keep handoffs **short and actionable**:
   - Delegate execution to ag
   - Route detailed clarifications/writing to hp
   - Minimize Human Director typing; prefer y/no questions
+  - For parallel batch development, use `templates/iterative-dev-protocol.md`
 
 ### Agent: ag (Builder / Executor)
 

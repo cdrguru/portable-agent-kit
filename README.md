@@ -98,6 +98,8 @@ The **PACK Development Engine (PDE)** provides structural maintenance for the ki
 +-- lmstudio_mcp.py               # Context-aware offline model bridge
 +-- templates/
 |   +-- parallel-cloud-tasks-kit/ # Portable cloud task batch workflow
+|   +-- iterative-dev-protocol.md # Orchestrated batch-iterate-merge cycle
+|   +-- prompt-attribution-protocol.md # Prompt origin tracking template
 ```
 
 ---
@@ -108,6 +110,8 @@ Reusable add-ons you can copy into any repo:
 
 - `templates/parallel-cloud-tasks-kit/` — generate 5 disjoint cloud tasks, review, and merge them safely.
   - See `templates/parallel-cloud-tasks-kit/README.md` for full instructions.
+- `templates/iterative-dev-protocol.md` — orchestrated Generate/Execute/Merge/Archive cycle for continuous parallel batch development. Wraps the parallel cloud tasks pattern into a repeatable state machine.
+- `templates/prompt-attribution-protocol.md` — reusable template for adding the Prompt Attribution & Clarification Protocol to any repo's agent instructions file.
 
 ### Parallel Cloud Tasks — Quick Use
 
@@ -127,6 +131,24 @@ Run the workflow (in the target repo):
 Compatibility:
 - Requires a git repo
 - Merge protocol assumes GitHub + `gh` CLI (adjust if using another host)
+
+### Iterative Dev Protocol — Quick Use
+
+The iterative protocol adds a repeatable cycle on top of parallel cloud tasks:
+
+1. **Generate** — scan for the next batch of disjoint tasks
+2. **Execute** — spawn parallel cloud sessions
+3. **Merge** — review, test, and squash-merge each PR
+4. **Archive** — preserve batch history and loop
+
+```bash
+# Copy the template into your orchestrator session
+cat templates/iterative-dev-protocol.md
+# Fill in the variables: ${ProjectName}, ${BatchSize}, ${TestCommand}, ${TaskPriority}
+# Paste into your orchestrating agent to start the cycle
+```
+
+The protocol includes a state machine for resuming mid-cycle and guardrails for task isolation.
 
 ---
 
