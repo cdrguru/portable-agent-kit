@@ -13,8 +13,8 @@ The Paul Davis Experience (PDE) system has been successfully integrated into the
 
 | Source | Target | Status |
 | ------ | ------ | ------ |
-| `.pde/agents/ruthless_prioritizer.md` | `.agent/profiles/ruthless_prioritizer.md` | ✅ Migrated |
-| `.pde/agents/librarian.md` | `.agent/profiles/librarian.md` | ✅ Migrated |
+| `.pde/agents/ruthless_prioritizer.md` | `.agent/ai/prompts/agent_profiles/ruthless_prioritizer.md` | ✅ Migrated |
+| `.pde/agents/librarian.md` | `.agent/ai/prompts/agent_profiles/librarian.md` | ✅ Migrated |
 
 ### Workflows
 
@@ -44,7 +44,7 @@ The Paul Davis Experience (PDE) system has been successfully integrated into the
 
 | Directory | Purpose |
 | --------- | ------- |
-| `.agent/profiles/` | Agent profile definitions |
+| `.agent/ai/prompts/agent_profiles/` | Agent profile definitions |
 | `.agent/state/` | Task tracking and metrics |
 | `.agent/state/daily/` | Daily roadmap logs |
 | `.agent/knowledge/` | Atomic knowledge notes |

@@ -1,0 +1,54 @@
+# CLAUDE.md
+
+${PROJECT_DESCRIPTION}
+
+## Architecture
+
+<!-- List key directories and their purpose -->
+
+| Directory | Purpose |
+|-----------|---------|
+| `src/` | Source code |
+| `tests/` | Test suite |
+
+## Commands
+
+```bash
+# Add your build, test, lint commands here
+make           # Default target
+make test      # Run tests
+make lint      # Run linter
+```
+
+## Key Files
+
+<!-- Reference important files Claude Code should know about -->
+
+| File | Purpose |
+|------|---------|
+| `README.md` | Project documentation |
+
+## Constraints
+
+<!-- Add project-specific rules and conventions -->
+
+- Follow existing code style and patterns
+- Run tests before committing
+
+## Agent Context (if using PACK)
+
+<!-- Remove this section if not using the Portable Agent Collaboration Kit -->
+
+| File | Purpose |
+|------|---------|
+| `.agent/AGENTS.md` | Agent roster and coordination rules |
+| `.agent/skills/README.md` | Available skills |
+
+### Handoff Protocol
+
+```bash
+python3 .agent/tools/utilities/update_agent_conversation_log.py \
+  --agent claude_code \
+  --summary "What was done" \
+  --handoff <next_agent_or_human>
+```

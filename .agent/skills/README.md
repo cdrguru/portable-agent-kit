@@ -64,3 +64,7 @@ Use when you need to record a handoff.
 | session-bootstrap | Initialize a local session log from the template | $session-bootstrap |
 | gemini-cli-init | Setup Gemini CLI as auditor | $gemini-cli-init |
 | gemini-audit | Audit task via Gemini | $gemini-audit |
+| claude-md-init | Generate CLAUDE.md for any repo | $claude-md-init |
+| claude-code-init | Bootstrap Claude Code session with PACK context | $claude-code-init |
+| claude-code-handoff | Record handoff from Claude Code to next agent | $claude-code-handoff |
+| prompt-library-setup | Set up an organized prompt library with categories, catalog, and inbox | $prompt-library-setup |

@@ -1,0 +1,11 @@
+
+## -- Prompt Library -------------------------------------------------------
+prompt-catalog:  ## Regenerate the prompt catalog
+	@echo "TODO: Run catalog generator"
+	@echo "For now, manually update prompts_library/CATALOG.md"
+
+prompt-list:  ## List all prompts in the library
+	@find prompts_library -name '*.md' ! -name 'CATALOG.md' ! -name 'README.md' ! -name '.gitkeep' | sort
+
+prompt-inbox:  ## Show what's in the inbox
+	@ls -la prompts_library/_inbox/*.md 2>/dev/null || echo "Inbox is empty"

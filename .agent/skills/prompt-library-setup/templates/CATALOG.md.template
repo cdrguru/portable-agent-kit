@@ -1,0 +1,51 @@
+# Prompt Library Catalog
+
+> Browsable index of all prompts in the `${REPO_NAME}` repository.
+> Links point to current file locations -- nothing has been moved.
+
+---
+
+## Categories
+
+| Prefix | Folder | Description |
+|--------|--------|-------------|
+| `sys-` | `agents/` | System instructions, agent personas |
+| `tpl-` | `templates/` | Reusable prompt templates with `${variables}` |
+| `wfl-` | `workflows/` | Multi-step processes, SOPs |
+| `sal-` | `sales/` | Sales-specific prompts |
+| `doc-` | `docs/` | Guides and reference material |
+
+> Customize this table to match your chosen categories.
+
+---
+
+## Existing Prompt Inventory
+
+<!-- For each category, add a table like this: -->
+
+### Category Name (`prefix-*`)
+
+| File | Current Location | Notes |
+|------|-----------------|-------|
+| example-file.md | [folder/](../folder/example-file.md) | Brief description |
+
+---
+
+## New Prompts
+
+New prompts go in `prompts_library/_inbox/`. See the [inbox README](_inbox/README.md) for the workflow.
+
+1. Drop a new `.md` file into `_inbox/`
+2. Name it using the convention: `<prefix>-<kebab-slug>.md`
+3. Move it to the appropriate category folder when ready
+4. Update this catalog with a link to the new location
+
+---
+
+## Naming Convention
+
+```
+<prefix>-<kebab-slug>.md
+```
+
+**Slug rules**: 2-7 lowercase kebab-case tokens, ASCII only.

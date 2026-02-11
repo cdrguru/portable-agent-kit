@@ -1,0 +1,34 @@
+# Prompt Library Inbox
+
+Drop new prompt files here for triage and categorization.
+
+## How to Use
+
+1. **Drop** a new `.md` file into this `_inbox/` directory
+2. **Name it** using the convention: `<prefix>-<kebab-slug>.md`
+3. **Move** it to the correct category folder when ready
+4. **Update** `../CATALOG.md` with a link to the new file
+
+## Naming Convention
+
+```
+<prefix>-<kebab-slug>.md
+```
+
+| Prefix | Folder | What goes here |
+|--------|--------|---------------|
+| `sys-` | `agents/` | System instructions, agent personas |
+| `tpl-` | `templates/` | Reusable prompt templates with `${variables}` |
+| `wfl-` | `workflows/` | Multi-step processes, SOPs |
+| `sal-` | `sales/` | Sales demos, follow-ups, SOWs |
+| `doc-` | `docs/` | Guides, reference material |
+
+> Customize this table to match your repo's chosen categories.
+
+## Quick Commands
+
+```bash
+make prompt-inbox    # Show what's in the inbox
+make prompt-list     # List all prompts in the library
+make prompt-catalog  # Reminder to update the catalog
+```
