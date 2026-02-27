@@ -42,6 +42,7 @@ python3 .agent/tools/utilities/skills.py show <name> # Show a skill
 | prompt-library-setup | `$prompt-library-setup` |
 | agentic-audit | `$agentic-audit` |
 | skill-porter | `$skill-porter` |
+| session-to-templates | `$session-to-templates` |
 
 ## Constraints
 

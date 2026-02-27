@@ -70,3 +70,4 @@ Use when you need to record a handoff.
 | prompt-library-setup | Set up an organized prompt library with categories, catalog, and inbox | $prompt-library-setup |
 | agentic-audit | Audit repo against 24-item agentic development checklist | $agentic-audit |
 | skill-porter | Port skills from any AI assistant format to PACK | $skill-porter |
+| session-to-templates | Mine prompt templates from AI coding sessions | $session-to-templates |
