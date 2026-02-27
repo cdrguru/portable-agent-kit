@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schemas/mcp.schema.json",
+  "mcpServers": {
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-server-sentry"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "${SENTRY_AUTH_TOKEN}",
+        "SENTRY_ORG": "${SENTRY_ORG}",
+        "SENTRY_PROJECT": "${SENTRY_PROJECT}"
+      },
+      "description": "Sentry error monitoring integration for automated triage"
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${SLACK_TEAM_ID}"
+      },
+      "description": "Slack integration for notifications and team communication"
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-server-filesystem"],
+      "env": {
+        "ALLOWED_PATHS": "${PWD}"
+      },
+      "description": "Local filesystem access for document processing"
+    }
+  }
+}

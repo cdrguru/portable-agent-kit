@@ -1,0 +1,26 @@
+# Claude Code Model Routing Targets
+# Append these targets to your Makefile
+#
+# Usage:
+#   make opusplan      # Plan complex tasks with Opus
+#   make sonnetbuild   # Build/execute with Sonnet
+#   make haikufast     # Quick tasks with Haiku
+#
+# Reference: Agentic Development Checklist (B1: Routing strategy)
+
+.PHONY: opusplan sonnetbuild haikufast claude-plan claude-build
+
+opusplan:  ## Plan complex tasks with Opus (higher cognitive depth)
+	@echo "Starting Claude Code in Plan Mode with Opus..."
+	claude --permission-mode plan --model claude-opus-4-5-20251101
+
+sonnetbuild:  ## Build/execute with Sonnet (faster, cheaper)
+	@echo "Starting Claude Code with Sonnet..."
+	claude --model claude-sonnet-4-5-20250929
+
+haikufast:  ## Quick tasks with Haiku (fastest, cheapest)
+	@echo "Starting Claude Code with Haiku..."
+	claude --model claude-haiku-4-5-20251001
+
+claude-plan: opusplan  ## Alias for opusplan
+claude-build: sonnetbuild  ## Alias for sonnetbuild

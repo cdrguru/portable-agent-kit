@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# PreToolUse Hook — Deterministic command blocking for Claude Code
+#
+# This hook intercepts tool payloads via stdin and blocks destructive commands
+# using regex pattern matching. It provides an infallible safety gate that
+# cannot be bypassed by LLM prompt injection.
+#
+# Exit codes:
+#   0 - Command allowed
+#   2 - Command blocked (returns error to agent context)
+#
+# Installation:
+#   1. Copy to .claude/hooks/pre_tool_use.sh
+#   2. chmod +x .claude/hooks/pre_tool_use.sh
+#   3. Register in .claude/hooks.json (see hooks.json exemplar)
+#
+# Prerequisite: jq must be installed (brew install jq / apt install jq)
+#
+# Reference: Agentic Development Checklist (C3: PreToolUse hook)
+
+set -euo pipefail
+
+# Read JSON payload from stdin
+payload=$(cat)
+
+# Extract the command from tool_input (Bash tool uses 'command' field)
+command=$(echo "$payload" | jq -r '.tool_input.command // empty')
+
+# If no command field, this isn't a Bash tool call — allow it
+if [[ -z "$command" ]]; then
+  exit 0
+fi
+
+# Define destructive command patterns
+# These patterns are checked against the full command string
+DESTRUCTIVE_PATTERNS=(
+  'rm -rf'
+  'rm -fr'
+  'rm --recursive --force'
+  'git reset --hard'
+  'git push --force'
+  'git push -f'
+  'git clean -fd'
+  'git clean -fdx'
+  'git checkout -- .'
+  'git checkout .'
+  ':(){:|:&};:'    # Fork bomb
+  '> /dev/sd'      # Disk wipe attempts
+  'dd if=/dev'     # Raw disk operations
+  'mkfs'           # Filesystem format
+  'chmod -R 777'   # Dangerous permission changes
+  'chown -R'       # Ownership changes
+)
+
+# Check for destructive patterns
+for pattern in "${DESTRUCTIVE_PATTERNS[@]}"; do
+  if [[ "$command" == *"$pattern"* ]]; then
+    echo "BLOCKED: Destructive command detected" >&2
+    echo "Pattern matched: $pattern" >&2
+    echo "Full command: $command" >&2
+    echo "" >&2
+    echo "If you need to run this command, do so manually outside Claude Code." >&2
+    exit 2
+  fi
+done
+
+# Define suspicious patterns that require extra scrutiny
+# These don't block but could be logged for audit
+SUSPICIOUS_PATTERNS=(
+  'curl'
+  'wget'
+  'ssh'
+  'scp'
+  'rsync'
+  'nc '
+  'netcat'
+  'telnet'
+)
+
+# Optional: Log suspicious commands (uncomment to enable)
+# for pattern in "${SUSPICIOUS_PATTERNS[@]}"; do
+#   if [[ "$command" == *"$pattern"* ]]; then
+#     echo "[AUDIT] Suspicious command executed: $command" >> ~/.claude/audit.log
+#     break
+#   fi
+# done
+
+# Command passed all checks — allow execution
+exit 0

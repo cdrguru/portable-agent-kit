@@ -1,0 +1,220 @@
+# Agentic Development Checklist - Remediation Queue Template
+# Copy to your repo (e.g., tasks/swarm/queue.yaml) and customize
+#
+# Usage: After running /agentic_audit, populate this queue with FAIL items
+# Then spawn parallel agents using Task tool with run_in_background: true
+#
+# Status codes: pending | in_progress | completed | blocked
+
+queue_name: agentic-checklist-remediation
+source_audit: # Path to audit report or plan file
+
+phases:
+  # Phase 1: Critical Safety (Day 1-3)
+  # These MUST be completed first - they protect against catastrophic failures
+  phase_1:
+    name: Critical Safety
+    parallel: false  # Sequential - hooks must exist before other work
+    items:
+      - id: P1.1
+        task: Create PreToolUse hook
+        file: .claude/hooks/pre_tool_use.sh
+        action: create
+        status: pending
+        checklist_ids: [C3]
+        spec: |
+          Create shell script that:
+          - Reads JSON from stdin via jq
+          - Blocks rm -rf, git reset --hard, git push --force, curl, wget, ssh
+          - Echoes warning to stderr
+          - Exits with code 2 on blocked command
+
+      - id: P1.2
+        task: Register hooks in hooks.json
+        file: .claude/hooks.json
+        action: create
+        status: pending
+        checklist_ids: [C3]
+        spec: |
+          Register pre_tool_use.sh as PreToolUse hook
+
+      - id: P1.3
+        task: Create emergency stop runbook
+        file: docs/runbooks/emergency-stop.md
+        action: create
+        status: pending
+        checklist_ids: [A3]
+        spec: |
+          Git recovery commands for:
+          - Uncommitted: git restore .
+          - Committed unpushed: git reset --soft HEAD~1
+          - Pushed: git revert [commit]
+          - Unknown corruption: git reflog + git reset --hard
+
+      - id: P1.4
+        task: Add version pinning to .env.example
+        file: .env.example
+        action: modify
+        status: pending
+        checklist_ids: [B2]
+        spec: |
+          Add ANTHROPIC_DEFAULT_OPUS_MODEL and ANTHROPIC_DEFAULT_HAIKU_MODEL
+          with immutable date-stamped model IDs
+
+  # Phase 2: Secret Prevention (Day 4-7)
+  phase_2:
+    name: Secret Prevention
+    parallel: true
+    items:
+      - id: P2.1
+        task: Add gitleaks and security hooks to pre-commit
+        file: .pre-commit-config.yaml
+        action: modify
+        status: pending
+        checklist_ids: [D1, D2]
+        spec: |
+          Add gitleaks/gitleaks v8.18.0 and pre-commit-hooks v4.5.0
+          with check-merge-conflict, check-added-large-files, detect-private-key
+
+      - id: P2.2
+        task: Add Gitleaks CI job to quality workflow
+        file: .github/workflows/quality.yml
+        action: modify
+        status: pending
+        checklist_ids: [D4]
+        spec: |
+          Add gitleaks-action@v2 step after checkout
+
+  # Phase 3: Documentation (Day 8-14)
+  phase_3:
+    name: Documentation
+    parallel: true
+    items:
+      - id: P3.1
+        task: Create start-of-day runbook
+        file: docs/runbooks/start-of-day.md
+        action: create
+        status: pending
+        checklist_ids: [I1]
+
+      - id: P3.2
+        task: Create new-feature runbook
+        file: docs/runbooks/new-feature.md
+        action: create
+        status: pending
+        checklist_ids: [I1]
+
+      - id: P3.3
+        task: Create rollback runbook
+        file: docs/runbooks/rollback.md
+        action: create
+        status: pending
+        checklist_ids: [A3, I1]
+
+      - id: P3.4
+        task: Create weekly-maintenance runbook
+        file: docs/runbooks/weekly-maintenance.md
+        action: create
+        status: pending
+        checklist_ids: [I1]
+
+      - id: P3.5
+        task: Create git worktree strategy doc
+        file: docs/worktree-strategy.md
+        action: create
+        status: pending
+        checklist_ids: [E1, E2, E3]
+
+      - id: P3.6
+        task: Update CODEOWNERS with path restrictions
+        file: .github/CODEOWNERS
+        action: modify
+        status: pending
+        checklist_ids: [A2, F1]
+        spec: |
+          Create CODEOWNERS with Red/Yellow/Green path tiers.
+          Use @org/team placeholders — replace with actual GitHub team names.
+          See exemplars/CODEOWNERS.example for template.
+
+      - id: P3.7
+        task: Add CLAUDE.local.md to gitignore
+        file: .gitignore
+        action: modify
+        status: pending
+        checklist_ids: [H3]
+
+  # Phase 4: Optimization (Day 15-30)
+  phase_4:
+    name: Optimization
+    parallel: false
+    items:
+      - id: P4.1
+        task: Implement opusplan routing alias
+        file: Makefile
+        action: modify
+        status: pending
+        checklist_ids: [B1]
+
+      - id: P4.2
+        task: Add ccusage integration
+        file: scripts/ccusage_report.sh
+        action: create
+        status: pending
+        checklist_ids: [B3]
+
+      - id: P4.3
+        task: Create 30/60/90 adoption plan
+        file: docs/adoption-30-60-90.md
+        action: create
+        status: pending
+        checklist_ids: [I2]
+
+      - id: P4.4
+        task: Add OS sandboxing wrapper
+        file: scripts/sandbox_claude.sh
+        action: create
+        status: pending
+        checklist_ids: [C2]
+
+      - id: P4.5
+        task: Configure Sentry MCP
+        file: .mcp.json.example
+        action: create
+        status: pending
+        checklist_ids: [G1, G2]
+
+      - id: P4.6
+        task: Add Presidio PII redaction
+        file: docker-compose.yml
+        action: modify
+        status: pending
+        checklist_ids: [G3]
+
+# =============================================================================
+# Swarm Execution Pattern
+# =============================================================================
+#
+# To run items in parallel, spawn Haiku agents with run_in_background: true
+#
+# Example workflow:
+#   1. Read queue.yaml to get pending items for phase
+#   2. For each item with parallel=true phase, spawn Task:
+#      - subagent_type: general-purpose
+#      - model: haiku (cost-effective for focused tasks)
+#      - run_in_background: true
+#      - prompt: Task spec with file path and action
+#   3. Monitor completion via TaskOutput tool
+#   4. Update queue.yaml status to completed
+#
+# Sequential phases (parallel=false):
+#   - Complete each item before starting next
+#   - Use dependencies to ensure proper ordering
+#
+# Prompt template for spawned agents:
+#   "Task ID: {id}
+#    File: {file}
+#    Action: {action}
+#    Spec: {spec}
+#
+#    Create/modify ONLY the specified file. Do not touch other files.
+#    Mark complete when done."

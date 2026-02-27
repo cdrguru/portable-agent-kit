@@ -40,6 +40,7 @@ python3 .agent/tools/utilities/skills.py show <name> # Show a skill
 | gemini-cli-init | `$gemini-cli-init` |
 | gemini-audit | `$gemini-audit` |
 | prompt-library-setup | `$prompt-library-setup` |
+| agentic-audit | `$agentic-audit` |
 
 ## Constraints
 

@@ -1,0 +1,74 @@
+# Emergency Stop Runbook
+
+> Use this when an AI agent has made destructive or unwanted changes.
+
+## Scenario 1: Uncommitted Changes (agent wrote bad code)
+
+```bash
+# Discard all unstaged changes
+git restore .
+
+# Remove untracked files the agent created
+git clean -fd
+
+# Verify clean state
+git status
+```
+
+## Scenario 2: Committed but NOT Pushed
+
+```bash
+# Undo last commit, keep changes staged (safe — lets you review)
+git reset --soft HEAD~1
+
+# Undo last commit AND discard changes (destructive)
+git reset --hard HEAD~1
+
+# Undo last N commits
+git reset --soft HEAD~3
+```
+
+## Scenario 3: Already Pushed
+
+```bash
+# Create a revert commit (safe — preserves history)
+git revert <commit-sha>
+git push
+
+# Revert a range of commits
+git revert <oldest-sha>..<newest-sha>
+git push
+```
+
+## Scenario 4: Unknown Corruption (git history damaged)
+
+```bash
+# View full history including resets
+git reflog
+
+# Find last known good state
+git log --oneline --all | head -20
+
+# Restore to a known good state
+git reset --hard <good-commit-sha>
+```
+
+## Scenario 5: Agent Deleted Important Files
+
+```bash
+# Restore specific file from last commit
+git checkout HEAD -- path/to/file
+
+# Restore file from specific commit
+git checkout <commit-sha> -- path/to/file
+
+# Find when a file was deleted
+git log --diff-filter=D --summary | grep "path/to/file"
+```
+
+## Prevention Checklist
+
+- [ ] PreToolUse hook blocks `rm -rf`, `git reset --hard`, `git push --force`
+- [ ] Agent runs in OS sandbox (sandbox-exec / bwrap)
+- [ ] CODEOWNERS requires human review for Red tier paths
+- [ ] CI runs Gitleaks before merge

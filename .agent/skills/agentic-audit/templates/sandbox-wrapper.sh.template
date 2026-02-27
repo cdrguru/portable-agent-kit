@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+# sandbox_claude.sh — OS-level sandboxing wrapper for Claude Code
+#
+# Provides defense-in-depth by restricting Claude Code's access to the
+# filesystem and network at the OS level. Uses macOS Seatbelt (sandbox-exec)
+# or Linux bubblewrap (bwrap).
+#
+# Installation:
+#   1. Copy to scripts/sandbox_claude.sh
+#   2. chmod +x scripts/sandbox_claude.sh
+#
+# Usage:
+#   ./scripts/sandbox_claude.sh              # Run Claude Code in sandbox
+#   ./scripts/sandbox_claude.sh --dry-run    # Show what would be done
+#
+# Reference: Agentic Development Checklist (C2: OS sandboxing)
+
+set -euo pipefail
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+DRY_RUN=false
+
+# Parse arguments
+for arg in "$@"; do
+    case $arg in
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+    esac
+done
+
+# Detect OS
+OS="$(uname -s)"
+
+echo -e "${BLUE}Claude Code Sandbox Wrapper${NC}"
+echo
+
+case "$OS" in
+    Darwin)
+        echo -e "${GREEN}Detected: macOS${NC}"
+        echo -e "Using: sandbox-exec (Seatbelt)"
+        echo
+
+        # macOS Seatbelt profile
+        SANDBOX_PROFILE=$(cat <<'EOF'
+(version 1)
+(deny default)
+
+; Allow read access to system libraries and frameworks
+(allow file-read*
+    (subpath "/usr/lib")
+    (subpath "/usr/share")
+    (subpath "/System/Library")
+    (subpath "/Library/Frameworks")
+    (subpath "/Applications/Xcode.app")
+    (subpath "/private/var/db/timezone"))
+
+; Allow read access to user config
+(allow file-read*
+    (subpath (string-append (param "HOME") "/.config"))
+    (subpath (string-append (param "HOME") "/.claude"))
+    (subpath (string-append (param "HOME") "/.npm"))
+    (subpath (string-append (param "HOME") "/.nvm")))
+
+; Allow full access to the repository
+(allow file*
+    (subpath (param "REPO_ROOT")))
+
+; Allow read access to temp directories
+(allow file-read*
+    (subpath "/private/tmp")
+    (subpath "/var/folders"))
+
+; Allow write to temp
+(allow file-write*
+    (subpath "/private/tmp")
+    (subpath "/var/folders"))
+
+; Allow network for API calls
+(allow network-outbound
+    (remote ip "*:443")
+    (remote ip "*:80"))
+
+; Block dangerous network
+(deny network-outbound
+    (remote ip "*:22")   ; SSH
+    (remote ip "*:23")   ; Telnet
+    (remote ip "*:25"))  ; SMTP
+
+; Allow process execution
+(allow process-exec)
+(allow process-fork)
+
+; Allow mach lookups for IPC
+(allow mach-lookup)
+
+; Allow sysctl reads
+(allow sysctl-read)
+EOF
+)
+
+        if $DRY_RUN; then
+            echo -e "${YELLOW}DRY RUN - Would execute:${NC}"
+            echo "sandbox-exec -p '<profile>' claude"
+            echo
+            echo -e "${YELLOW}Profile summary:${NC}"
+            echo "  - Deny default (whitelist approach)"
+            echo "  - Allow read: system libs, user config"
+            echo "  - Allow read/write: repository, temp"
+            echo "  - Allow network: HTTPS/HTTP only"
+            echo "  - Block: SSH, Telnet, SMTP"
+        else
+            echo -e "${GREEN}Starting Claude Code in sandbox...${NC}"
+            echo
+
+            sandbox-exec -p "$SANDBOX_PROFILE" \
+                -D HOME="$HOME" \
+                -D REPO_ROOT="$REPO_ROOT" \
+                claude "$@" || {
+                    echo -e "${YELLOW}Warning: sandbox-exec failed. Running without sandbox.${NC}"
+                    echo "Consider using Docker for more reliable sandboxing."
+                    claude "$@"
+                }
+        fi
+        ;;
+
+    Linux)
+        echo -e "${GREEN}Detected: Linux${NC}"
+        echo -e "Using: bubblewrap (bwrap)"
+        echo
+
+        if ! command -v bwrap &> /dev/null; then
+            echo -e "${RED}Error: bubblewrap not installed.${NC}"
+            echo "Install with: sudo apt install bubblewrap"
+            exit 1
+        fi
+
+        if $DRY_RUN; then
+            echo -e "${YELLOW}DRY RUN - Would execute:${NC}"
+            echo "bwrap \\"
+            echo "  --ro-bind /usr /usr \\"
+            echo "  --ro-bind /lib /lib \\"
+            echo "  --ro-bind /lib64 /lib64 \\"
+            echo "  --bind $REPO_ROOT $REPO_ROOT \\"
+            echo "  --bind /tmp /tmp \\"
+            echo "  --share-net \\"
+            echo "  claude"
+        else
+            echo -e "${GREEN}Starting Claude Code in sandbox...${NC}"
+            echo
+
+            bwrap \
+                --ro-bind /usr /usr \
+                --ro-bind /lib /lib \
+                --ro-bind /lib64 /lib64 \
+                --ro-bind /etc/resolv.conf /etc/resolv.conf \
+                --ro-bind /etc/ssl /etc/ssl \
+                --ro-bind "$HOME/.config" "$HOME/.config" \
+                --ro-bind "$HOME/.claude" "$HOME/.claude" \
+                --bind "$REPO_ROOT" "$REPO_ROOT" \
+                --bind /tmp /tmp \
+                --proc /proc \
+                --dev /dev \
+                --share-net \
+                claude "$@"
+        fi
+        ;;
+
+    *)
+        echo -e "${RED}Error: Unsupported OS: $OS${NC}"
+        echo "Sandbox wrapper supports macOS and Linux only."
+        echo
+        echo "Running Claude Code without sandbox..."
+        claude "$@"
+        ;;
+esac
+
+echo

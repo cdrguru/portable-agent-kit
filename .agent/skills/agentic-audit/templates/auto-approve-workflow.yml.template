@@ -1,0 +1,82 @@
+# Auto-Approve Green Diffs
+#
+# Automatically approves PRs that ONLY touch Green tier paths (docs, tests).
+# Blocks auto-approve if any Red or Yellow tier files are changed.
+#
+# Customize the path patterns in the classify step to match your project.
+#
+# Reference: Agentic Development Checklist (F2: Auto-approve Green diffs)
+
+name: Auto-Approve Green Diffs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  check-tier:
+    runs-on: ubuntu-latest
+    outputs:
+      is_green_only: ${{ steps.classify.outputs.is_green_only }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: files
+        run: |
+          FILES=$(gh pr diff ${{ github.event.pull_request.number }} --name-only)
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Classify changed files
+        id: classify
+        run: |
+          IS_GREEN="true"
+
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+
+            # Red tier — security-critical (customize these patterns)
+            if echo "$file" | grep -qE '(\.env|\.claude/settings|\.github/workflows|auth|secret|docker-compose)'; then
+              echo "RED: $file"
+              IS_GREEN="false"
+              break
+            fi
+
+            # Yellow tier — API/infrastructure (customize these patterns)
+            if echo "$file" | grep -qE '(^api/|^server\.|middleware|^scripts/)'; then
+              echo "YELLOW: $file"
+              IS_GREEN="false"
+              break
+            fi
+
+            echo "GREEN: $file"
+          done <<< "${{ steps.files.outputs.files }}"
+
+          echo "is_green_only=$IS_GREEN" >> $GITHUB_OUTPUT
+
+  auto-approve:
+    needs: [check-tier]
+    if: needs.check-tier.outputs.is_green_only == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Gitleaks (safety check)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-approve
+        run: |
+          gh pr review ${{ github.event.pull_request.number }} --approve \
+            --body "Auto-approved: Green-tier changes only (docs/tests)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -68,3 +68,4 @@ Use when you need to record a handoff.
 | claude-code-init | Bootstrap Claude Code session with PACK context | $claude-code-init |
 | claude-code-handoff | Record handoff from Claude Code to next agent | $claude-code-handoff |
 | prompt-library-setup | Set up an organized prompt library with categories, catalog, and inbox | $prompt-library-setup |
+| agentic-audit | Audit repo against 24-item agentic development checklist | $agentic-audit |

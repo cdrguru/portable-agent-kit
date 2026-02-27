@@ -1,0 +1,40 @@
+# CODEOWNERS — Risk-Tiered Review
+#
+# Replace @org/team placeholders with your actual GitHub team names.
+#
+# Tier classification:
+#   Red    — Security-critical (requires security team review)
+#   Yellow — API/infrastructure (requires platform team review)
+#   Green  — Docs, tests, configs (standard review, auto-approve eligible)
+#
+# Reference: Agentic Development Checklist (F1: Red/Yellow/Green tiers)
+
+# =============================================================================
+# Red Tier — Security-critical paths (MUST have security review)
+# =============================================================================
+
+/.claude/settings.json     @org/security-team
+/.claude/hooks*            @org/security-team
+/.github/workflows/        @org/security-team
+*.env*                     @org/security-team
+**/auth*                   @org/security-team
+**/secret*                 @org/security-team
+docker-compose*            @org/security-team
+
+# =============================================================================
+# Yellow Tier — API and infrastructure changes
+# =============================================================================
+
+# Customize these paths to match your project structure
+api/                       @org/platform-team
+server.*                   @org/platform-team
+**/middleware*              @org/platform-team
+scripts/                   @org/platform-team
+
+# =============================================================================
+# Green Tier — Documentation, tests, configs (auto-approve eligible)
+# =============================================================================
+
+docs/                      @org/dev-team
+tests/                     @org/dev-team
+*.md                       @org/dev-team

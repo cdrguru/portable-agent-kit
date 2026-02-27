@@ -1,0 +1,139 @@
+# Agentic Development Checklist
+
+> Copy this file to your repository and run `$agentic-audit` to populate the Status column.
+
+## Audit Worksheet
+
+| ID | Priority | Item | Evidence to find | Status | Notes |
+|:---|:---------|:-----|:-----------------|:------:|:------|
+| A1 | MUST | Plan-before-execute | `claude --permission-mode plan` in docs/scripts | [ ] | |
+| A2 | MUST | Human merge gate | `.github/workflows/`, `CODEOWNERS` for risky paths | [ ] | |
+| A3 | MUST | Deterministic rollback | `git restore`, `git reset --hard` in runbooks | [ ] | |
+| B1 | SHOULD | Routing strategy | `opusplan` alias in shell configs/scripts | [ ] | |
+| B2 | MUST | Version pinning | `ANTHROPIC_DEFAULT_OPUS_MODEL` in `.env` | [ ] | |
+| B3 | MUST | Token governance | `ccusage` integration in statusline/scripts | [ ] | |
+| C1 | MUST | Deny-first permissions | `.claude/settings.json` (allow/deny arrays) | [ ] | |
+| C2 | MUST | OS sandboxing | `sandbox-exec` or `bwrap` in wrapper scripts | [ ] | |
+| C3 | MUST | PreToolUse hook | `jq`, `rm -rf`, `exit 2`, `>&2` in hook script | [ ] | |
+| D1 | MUST | Pre-commit hooks | `.pre-commit-config.yaml` standard hooks | [ ] | |
+| D2 | SHOULD | Secret scan: Gitleaks | `gitleaks` in pre-commit config | [ ] | |
+| D3 | SHOULD | Secret scan: baseline | `detect-secrets`, `.secrets.baseline` | [ ] | |
+| D4 | MUST | CI enforcement | Secret scanning job in CI pipeline | [ ] | |
+| E1 | MUST | Git worktree workflow | `git worktree add` in docs/scripts | [ ] | |
+| E2 | MUST | Task decomposition | Module ownership rules in `CONTRIBUTING.md` | [ ] | |
+| E3 | MUST | Main integration tree | Integration hub workflow documented | [ ] | |
+| F1 | MUST | Red/Yellow/Green tiers | Path restrictions in CI / `CODEOWNERS` | [ ] | |
+| F2 | MUST | Auto-approve Green | Conditional auto-merge CI workflow | [ ] | |
+| G1 | MUST | MCP observability | Sentry/Slack MCP in `.claude/settings.json` | [ ] | |
+| G2 | SHOULD | Daily triage workflow | Script fetching 24h Sentry issues via MCP | [ ] | |
+| G3 | MUST | PII redaction (OTel) | `Presidio` or NLP masking in OTel config | [ ] | |
+| H1 | MUST | Root CLAUDE.md | `CLAUDE.md` (concise, stable rules only) | [ ] | |
+| H2 | MUST | Path-scoped rules | `.claude/rules/` directory exists | [ ] | |
+| H3 | MUST | Local overrides | `CLAUDE.local.md` in `.gitignore` | [ ] | |
+| I1 | MUST | Operational Runbooks | Start-of-day, Rollback, etc., in `docs/` | [ ] | |
+| I2 | MUST | 30/60/90 & KPIs | KPI scorecard metrics in documentation | [ ] | |
+
+---
+
+## Scoring
+
+- **Total Items:** 24
+- **MUST Priority:** 21
+- **SHOULD Priority:** 3
+
+### Pass Criteria by Priority
+
+| Priority | Minimum Pass Rate | Notes |
+|----------|-------------------|-------|
+| MUST | 100% | All MUST items required for production use |
+| SHOULD | 66% (2/3) | At least 2 of 3 SHOULD items |
+
+---
+
+## Quick Start Remediation
+
+### Phase 1: Critical Safety (Day 1-3)
+
+1. **C3: Create PreToolUse Hook**
+   ```bash
+   mkdir -p .claude/hooks
+   # Create pre_tool_use.sh with jq regex blocking
+   ```
+
+2. **A3: Create Emergency Stop Runbook**
+   ```bash
+   mkdir -p docs/runbooks
+   # Create emergency-stop.md with git restore/reset/revert commands
+   ```
+
+3. **B2: Add Version Pinning**
+   ```bash
+   # Add to .env.example:
+   ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-4-5-20251101
+   ANTHROPIC_DEFAULT_HAIKU_MODEL=claude-haiku-4-5-20251001
+   ```
+
+### Phase 2: Secret Prevention (Day 4-7)
+
+1. **D1/D2: Add Pre-commit Hooks**
+   ```yaml
+   # .pre-commit-config.yaml
+   repos:
+     - repo: https://github.com/gitleaks/gitleaks
+       rev: v8.18.0
+       hooks:
+         - id: gitleaks
+     - repo: https://github.com/pre-commit/pre-commit-hooks
+       rev: v4.5.0
+       hooks:
+         - id: check-merge-conflict
+         - id: check-added-large-files
+         - id: detect-private-key
+   ```
+
+2. **D4: Add CI Secret Scanning**
+   ```yaml
+   # .github/workflows/quality.yml
+   - name: Run Gitleaks
+     uses: gitleaks/gitleaks-action@v2
+   ```
+
+### Phase 3: Documentation (Day 8-14)
+
+1. Create 5 runbooks in `docs/runbooks/`:
+   - `start-of-day.md`
+   - `new-feature.md`
+   - `emergency-stop.md`
+   - `rollback.md`
+   - `weekly-maintenance.md`
+
+2. Create `docs/worktree-strategy.md`
+
+3. Update `.github/CODEOWNERS` with Red/Yellow/Green tiers
+
+### Phase 4: Optimization (Day 15-30)
+
+1. Add `opusplan`/`sonnetbuild` routing to Makefile
+2. Create `scripts/ccusage_report.sh`
+3. Create `scripts/sandbox_claude.sh`
+4. Configure MCP for observability
+5. Add Presidio to docker-compose
+6. Create `docs/adoption-30-60-90.md`
+
+---
+
+## Reference Files
+
+This skill bundles templates in `templates/`. Copy to target paths and customize.
+
+| Checklist Item | Template | Target Path |
+|----------------|----------|-------------|
+| C3: PreToolUse hook | `templates/pre-tool-use-hook.sh.template` | `.claude/hooks/pre_tool_use.sh` |
+| C3: Hook registration | `templates/hooks.json.template` | `.claude/hooks.json` |
+| C1: Permission matrix | `templates/settings.json.template` | `.claude/settings.json` |
+| G1: MCP observability | `templates/mcp-config.json.template` | `.mcp.json` |
+| C2: OS sandboxing | `templates/sandbox-wrapper.sh.template` | `scripts/sandbox_claude.sh` |
+| B1: Model routing | `templates/makefile-routing.snippet` | Append to `Makefile` |
+| F1: Risk tiers | `templates/codeowners.template` | `.github/CODEOWNERS` |
+| A3: Rollback | `templates/emergency-stop.md.template` | `docs/runbooks/emergency-stop.md` |
+| F2: Auto-approve | `templates/auto-approve-workflow.yml.template` | `.github/workflows/auto-approve.yml` |
