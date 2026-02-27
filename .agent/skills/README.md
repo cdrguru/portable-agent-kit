@@ -69,3 +69,4 @@ Use when you need to record a handoff.
 | claude-code-handoff | Record handoff from Claude Code to next agent | $claude-code-handoff |
 | prompt-library-setup | Set up an organized prompt library with categories, catalog, and inbox | $prompt-library-setup |
 | agentic-audit | Audit repo against 24-item agentic development checklist | $agentic-audit |
+| skill-porter | Port skills from any AI assistant format to PACK | $skill-porter |

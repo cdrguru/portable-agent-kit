@@ -41,6 +41,7 @@ python3 .agent/tools/utilities/skills.py show <name> # Show a skill
 | gemini-audit | `$gemini-audit` |
 | prompt-library-setup | `$prompt-library-setup` |
 | agentic-audit | `$agentic-audit` |
+| skill-porter | `$skill-porter` |
 
 ## Constraints
 
