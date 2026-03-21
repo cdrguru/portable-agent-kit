@@ -74,54 +74,54 @@ Use when you need to record a handoff.
 | session-to-templates | Mine prompt templates from AI coding sessions | $session-to-templates |
 | skill-porter | Port skills from any AI assistant format to PACK | $skill-porter |
 
-### Google Workspace Skills
+### Google Workspace (GWS)
 
 | Skill | Description | Invocation |
 | --- | --- | --- |
+| gws-shared | gws CLI: Shared patterns for authentication, global flags, and output formatting | $gws-shared |
 | gws-calendar | Google Calendar: Manage calendars and events | $gws-calendar |
-| gws-calendar-agenda | Google Calendar: Show upcoming events | $gws-calendar-agenda |
+| gws-calendar-agenda | Google Calendar: Show upcoming events across all calendars | $gws-calendar-agenda |
 | gws-calendar-insert | Google Calendar: Create a new event | $gws-calendar-insert |
 | gws-docs | Read and write Google Docs | $gws-docs |
 | gws-docs-write | Google Docs: Append text to a document | $gws-docs-write |
-| gws-drive | Google Drive: Manage files, folders, shared drives | $gws-drive |
-| gws-drive-upload | Google Drive: Upload a file with metadata | $gws-drive-upload |
+| gws-drive | Google Drive: Manage files, folders, and shared drives | $gws-drive |
+| gws-drive-upload | Google Drive: Upload a file with automatic metadata | $gws-drive-upload |
 | gws-gmail | Gmail: Send, read, and manage email | $gws-gmail |
-| gws-gmail-forward | Gmail: Forward a message | $gws-gmail-forward |
-| gws-gmail-reply | Gmail: Reply to a message | $gws-gmail-reply |
+| gws-gmail-forward | Gmail: Forward a message to new recipients | $gws-gmail-forward |
+| gws-gmail-reply | Gmail: Reply to a message (handles threading automatically) | $gws-gmail-reply |
 | gws-gmail-send | Gmail: Send an email | $gws-gmail-send |
-| gws-gmail-triage | Gmail: Show unread inbox summary | $gws-gmail-triage |
-| gws-shared | gws CLI: Shared auth, flags, and output patterns | $gws-shared |
+| gws-gmail-triage | Gmail: Show unread inbox summary (sender, subject, date) | $gws-gmail-triage |
 | gws-sheets | Google Sheets: Read and write spreadsheets | $gws-sheets |
-| gws-sheets-append | Google Sheets: Append a row | $gws-sheets-append |
-| gws-sheets-read | Google Sheets: Read values | $gws-sheets-read |
-| gws-workflow | Google Workflow: Cross-service productivity | $gws-workflow |
-| gws-workflow-email-to-task | Google Workflow: Email to Google Tasks | $gws-workflow-email-to-task |
-| gws-workflow-meeting-prep | Google Workflow: Meeting prep | $gws-workflow-meeting-prep |
-| gws-workflow-standup-report | Google Workflow: Standup summary | $gws-workflow-standup-report |
-| gws-workflow-weekly-digest | Google Workflow: Weekly digest | $gws-workflow-weekly-digest |
+| gws-sheets-append | Google Sheets: Append a row to a spreadsheet | $gws-sheets-append |
+| gws-sheets-read | Google Sheets: Read values from a spreadsheet | $gws-sheets-read |
+| gws-workflow | Google Workflow: Cross-service productivity workflows | $gws-workflow |
+| gws-workflow-email-to-task | Google Workflow: Convert a Gmail message into a Google Tasks entry | $gws-workflow-email-to-task |
+| gws-workflow-meeting-prep | Google Workflow: Prepare for your next meeting: agenda, attendees, and linked docs | $gws-workflow-meeting-prep |
+| gws-workflow-standup-report | Google Workflow: Today's meetings + open tasks as a standup summary | $gws-workflow-standup-report |
+| gws-workflow-weekly-digest | Google Workflow: Weekly summary: this week's meetings + unread email count | $gws-workflow-weekly-digest |
 
-### Persona Skills
-
-| Skill | Description | Invocation |
-| --- | --- | --- |
-| persona-exec-assistant | Manage schedule, inbox, and communications | $persona-exec-assistant |
-| persona-sales-ops | Track deals, schedule calls, client comms | $persona-sales-ops |
-
-### Recipe Skills
+### Personas
 
 | Skill | Description | Invocation |
 | --- | --- | --- |
-| recipe-draft-email-from-doc | Draft email body from a Google Doc | $recipe-draft-email-from-doc |
-| recipe-find-free-time | Find meeting slots via free/busy query | $recipe-find-free-time |
-| recipe-find-large-files | Identify large Drive files consuming quota | $recipe-find-large-files |
-| recipe-log-deal-update | Append deal status to a tracking sheet | $recipe-log-deal-update |
+| persona-exec-assistant | Manage an executive's schedule, inbox, and communications | $persona-exec-assistant |
+| persona-sales-ops | Manage sales workflows — track deals, schedule calls, client comms | $persona-sales-ops |
 
-### Utility Skills
+### Recipes (Composable Workflows)
 
 | Skill | Description | Invocation |
 | --- | --- | --- |
-| agent-skills-guide | Generate HTML reference of all agents and skills | $agent-skills-guide |
-| redact-pii | Scan files for sensitive identifiers and redact | $redact-pii |
-| security-audit | 3-part security and configuration audit | $security-audit |
-| session-wrapup | End-of-session: survey, commit, push, verify | $session-wrapup |
-| tax-return-cleanup | Clean PDF-converted IRS forms into markdown | $tax-return-cleanup |
+| recipe-draft-email-from-doc | Read content from a Google Doc and use it as the body of a Gmail message | $recipe-draft-email-from-doc |
+| recipe-find-free-time | Query Google Calendar free/busy status for multiple users to find a meeting slot | $recipe-find-free-time |
+| recipe-find-large-files | Identify large Google Drive files consuming storage quota | $recipe-find-large-files |
+| recipe-log-deal-update | Append a deal status update to a Google Sheets sales tracking spreadsheet | $recipe-log-deal-update |
+
+### Utilities
+
+| Skill | Description | Invocation |
+| --- | --- | --- |
+| agent-skills-guide | Generate a single-page HTML reference of all AI agents, skills, model routing, and orchestration protocols | $agent-skills-guide |
+| redact-pii | Scan files for SSNs, EINs, TINs, account numbers, and other sensitive identifiers, then redact in-place | $redact-pii |
+| security-audit | 3-part security audit: secret leakage scan, env var completeness check, deployment readiness | $security-audit |
+| session-wrapup | End-of-session workflow: survey changes, group into logical commits, push to remote, verify clean state | $session-wrapup |
+| tax-return-cleanup | Clean a PDF-converted IRS Form 1065 KB file into an agent-readable markdown document | $tax-return-cleanup |
