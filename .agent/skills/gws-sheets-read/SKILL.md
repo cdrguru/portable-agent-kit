@@ -1,7 +1,7 @@
 ---
 name: gws-sheets-read
 version: 1.0.0
-description: "Google Sheets: Read values from a spreadsheet."
+description: "Use when the user asks to read, look up, or extract data from a Google Sheets spreadsheet."
 metadata:
   openclaw:
     category: "productivity"

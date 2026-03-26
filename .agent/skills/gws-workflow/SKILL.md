@@ -1,7 +1,7 @@
 ---
 name: gws-workflow
 version: 1.0.0
-description: "Google Workflow: Cross-service productivity workflows."
+description: "Use when the user asks for a multi-step workflow that combines Gmail, Calendar, Sheets, Drive, or Docs — e.g., standup reports, meeting prep, email-to-task conversion."
 metadata:
   openclaw:
     category: "productivity"
@@ -26,7 +26,6 @@ gws workflow <resource> <method> [flags]
 | [`+meeting-prep`](../gws-workflow-meeting-prep/SKILL.md) | Prepare for your next meeting: agenda, attendees, and linked docs |
 | [`+email-to-task`](../gws-workflow-email-to-task/SKILL.md) | Convert a Gmail message into a Google Tasks entry |
 | [`+weekly-digest`](../gws-workflow-weekly-digest/SKILL.md) | Weekly summary: this week's meetings + unread email count |
-| [`+file-announce`](../gws-workflow-file-announce/SKILL.md) | Announce a Drive file in a Chat space |
 
 ## Discovering Commands
 

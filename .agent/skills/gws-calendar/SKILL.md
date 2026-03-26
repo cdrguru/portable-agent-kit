@@ -1,7 +1,7 @@
 ---
 name: gws-calendar
 version: 1.0.0
-description: "Google Calendar: Manage calendars and events."
+description: "Use when the user asks to check, create, update, or delete Google Calendar events, or manage calendar settings."
 metadata:
   openclaw:
     category: "productivity"

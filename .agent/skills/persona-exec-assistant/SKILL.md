@@ -7,12 +7,12 @@ metadata:
     category: "persona"
     requires:
       bins: ["gws"]
-      skills: ["gws-gmail", "gws-calendar", "gws-drive", "gws-chat"]
+      skills: ["gws-gmail", "gws-calendar", "gws-drive"]
 ---
 
 # Executive Assistant
 
-> **PREREQUISITE:** Load the following utility skills to operate as this persona: `gws-gmail`, `gws-calendar`, `gws-drive`, `gws-chat`
+> **PREREQUISITE:** Load the following utility skills to operate as this persona: `gws-gmail`, `gws-calendar`, `gws-drive`
 
 Manage an executive's schedule, inbox, and communications.
 

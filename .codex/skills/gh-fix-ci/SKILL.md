@@ -10,7 +10,7 @@ metadata:
 ## Overview
 
 Use gh to locate failing PR checks, fetch GitHub Actions logs for actionable failures, summarize the failure snippet, then propose a fix plan and implement after explicit approval.
-- Depends on the `plan` skill for drafting and approving the fix plan.
+- Drafts a fix plan inline and requests user approval before implementing.
 
 Prereq: ensure `gh` is authenticated (for example, run `gh auth login` once), then run `gh auth status` with escalated permissions (include workflow/repo scopes) so `gh` commands succeed. If sandboxing blocks `gh auth status`, rerun it with `sandbox_permissions=require_escalated`.
 
@@ -53,7 +53,7 @@ Prereq: ensure `gh` is authenticated (for example, run `gh auth login` once), th
    - Provide the failing check name, run URL (if any), and a concise log snippet.
    - Call out missing logs explicitly.
 6. Create a plan.
-   - Use the `plan` skill to draft a concise plan and request approval.
+   - Draft a concise fix plan as a numbered list: root cause, files to change, and the fix. Present to the user for approval before implementing.
 7. Implement after approval.
    - Apply the approved plan, summarize diffs/tests, and ask about opening a PR.
 8. Recheck status.

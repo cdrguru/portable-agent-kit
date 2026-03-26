@@ -1,7 +1,7 @@
 ---
 name: gws-drive
 version: 1.0.0
-description: "Google Drive: Manage files, folders, and shared drives."
+description: "Use when the user asks to find, list, organize, or manage files and folders in Google Drive."
 metadata:
   openclaw:
     category: "productivity"

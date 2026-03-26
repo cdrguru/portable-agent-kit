@@ -20,13 +20,13 @@ If no target is clear from context, ask the user which file to process.
 
 ## Phase 1: Locate the Cleanup Script
 
+**Resolve PROJECT_ROOT first**: walk up from the current working directory until you find a directory containing `.git/`. That directory is `PROJECT_ROOT`.
+
 The cleanup script lives at:
 
 ```
-.agent/scripts/tax_return_cleanup.py
+$PROJECT_ROOT/.agent/scripts/tax_return_cleanup.py
 ```
-
-(relative to the MacFran repo root at `/Users/pmd/Documents/mynetworkrepos/macfran/`)
 
 Use Glob to confirm it exists:
 ```
@@ -54,9 +54,11 @@ Confirm the target file(s) with the user if ambiguous.
 For each target file, run:
 
 ```bash
-python3 /Users/pmd/Documents/mynetworkrepos/macfran/.agent/scripts/tax_return_cleanup.py \
+python3 "$PROJECT_ROOT/.agent/scripts/tax_return_cleanup.py" \
     "<absolute_path_to_input_kb.md>"
 ```
+
+(where `$PROJECT_ROOT` is the git repository root resolved in Phase 1)
 
 The script writes output to `<input_stem>_clean.md` in the same directory as the input.
 
@@ -132,4 +134,4 @@ The Python script (`tax_return_cleanup.py`) performs these transformations:
 - The script writes a **new file** (`_clean.md`) — the original KB is never modified.
 - If run on a file that has already been redacted (SSNs/EINs replaced with `XXX-XX-XXXX`), it works correctly — redaction and cleanup are independent operations.
 - For best results, run `/redact-pii` on the KB **before** running this skill so the clean output is also PII-free.
-- The script is at `.agent/scripts/tax_return_cleanup.py` in the MacFran repo and can be updated as new return formats are encountered.
+- The script is at `$PROJECT_ROOT/.agent/scripts/tax_return_cleanup.py` and can be updated as new return formats are encountered.

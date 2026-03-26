@@ -1,7 +1,7 @@
 ---
 name: gws-docs
 version: 1.0.0
-description: "Read and write Google Docs."
+description: "Use when the user asks to read, create, or edit a Google Doc, or needs to interact with document content in Google Docs."
 metadata:
   openclaw:
     category: "productivity"

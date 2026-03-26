@@ -1,7 +1,7 @@
 ---
 name: gws-shared
 version: 1.0.0
-description: "gws CLI: Shared patterns for authentication, global flags, and output formatting."
+description: "Shared dependency for all gws-* skills. Provides authentication patterns, global flags, and output formatting for the gws CLI. Not directly user-invoked."
 metadata:
   openclaw:
     category: "productivity"

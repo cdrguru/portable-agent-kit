@@ -1,7 +1,7 @@
 ---
 name: gws-calendar-insert
 version: 1.0.0
-description: "Google Calendar: Create a new event."
+description: "Use when the user asks to schedule a meeting, create a calendar event, or book time on a calendar."
 metadata:
   openclaw:
     category: "productivity"

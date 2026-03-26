@@ -1,7 +1,7 @@
 ---
 name: gws-gmail-send
 version: 1.0.0
-description: "Gmail: Send an email."
+description: "Use when the user asks to compose and send a new email via Gmail."
 metadata:
   openclaw:
     category: "productivity"
